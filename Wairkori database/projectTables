@@ -1,0 +1,96 @@
+CREATE TABLE Employee (
+    employee_id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    middle_initial CHAR(1),
+    gender CHAR(1),
+    address VARCHAR(255),
+    hobbies VARCHAR(255),
+    salary DECIMAL(10, 2),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+CREATE TABLE Department (
+    department_id INT PRIMARY KEY,
+    department_name VARCHAR(100),
+    location VARCHAR(100),
+    phone_number VARCHAR(20),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Dependent (
+    dependent_id INT PRIMARY KEY,
+    employee_id INT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    gender CHAR(1),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Office (
+    office_id INT PRIMARY KEY,
+    location VARCHAR(100),
+    phone_number VARCHAR(20)
+);
+
+CREATE TABLE Company_Car (
+    car_id INT PRIMARY KEY,
+    vehicle_id VARCHAR(20),
+    license_plate_number VARCHAR(20),
+    make VARCHAR(50),
+    model VARCHAR(50),
+    year_of_manufacture YEAR,
+    employee_id INT,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+);
+
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY,
+    description VARCHAR(255),
+    manufacture_date DATE,
+    current_price DECIMAL(10, 2),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+CREATE TABLE Warehouse (
+    warehouse_id INT PRIMARY KEY,
+    code VARCHAR(20),
+    location VARCHAR(100),
+    phone_number VARCHAR(20)
+);
+
+CREATE TABLE Kiosk_Owner (
+    owner_id INT PRIMARY KEY,
+    last_name VARCHAR(50),
+    first_name VARCHAR(50),
+    kiosk_location VARCHAR(100),
+    address VARCHAR(255),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Employee_Product (
+    employee_id INT,
+    product_id INT,
+    PRIMARY KEY (employee_id, product_id),
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+);
+
+CREATE TABLE Product_Warehouse (
+    product_warehouse_id INT PRIMARY KEY,
+    product_id INT,
+    warehouse_id INT,
+    FOREIGN KEY (product_id) REFERENCES Product(product_id),
+    FOREIGN KEY (warehouse_id) REFERENCES Warehouse(warehouse_id)
+);
+
+CREATE TABLE Product_KioskOwner (
+    product_kiosk_owner_id INT PRIMARY KEY,
+    product_id INT,
+    owner_id INT,
+    FOREIGN KEY (product_id) REFERENCES Product(product_id),
+    FOREIGN KEY (owner_id) REFERENCES Kiosk_Owner(owner_id)
+);

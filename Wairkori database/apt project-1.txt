@@ -1,0 +1,416 @@
+SQL> spool
+currently spooling to C:\Users\Oriama\Desktop\APT PROJECT\apt project.txt
+SQL> set linesize 400
+SQL> set pagesize 200
+SQL> CREATE TABLE Employee_Product(
+  2  Employee_id INT,
+  3  Product_id INT,
+  4  PRIMARY KEY(Employee_id, Product_id),
+  5  FOREIGN KEY(employee_id) REFERENCES Employe(Employee_id),
+  6  FOREIGN KEY(Product_id) REFERENCES Product(Product_id));
+CREATE TABLE Employee_Product(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP TABLE Employee_Product;
+
+Table dropped.
+
+SQL> CREATE TABLE Employee_Product(
+  2  Employee_id INT,
+  3  Product_id INT,
+  4  PRIMARY KEY(Employee_id, Product_id),
+  5  FOREIGN KEY(employee_id) REFERENCES Employe(Employee_id),
+  6  FOREIGN KEY(Product_id) REFERENCES Product(Product_id));
+FOREIGN KEY(employee_id) REFERENCES Employe(Employee_id),
+                                    *
+ERROR at line 5:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE TABLE Employee_Product(
+  2  Employee_id INT,
+  3  Product_id INT,
+  4  PRIMARY KEY(Employee_id, Product_id),
+  5  FOREIGN KEY(employee_id) REFERENCES Employee(Employee_id),
+  6  FOREIGN KEY(Product_id) REFERENCES Product(Product_id));
+FOREIGN KEY(Product_id) REFERENCES Product(Product_id))
+                                           *
+ERROR at line 6:
+ORA-00904: "PRODUCT_ID": invalid identifier 
+
+
+SQL> CREATE TABLE Employee_Product(
+  2  Employee_id INT,
+  3  Product_id INT,
+  4  PRIMARY KEY(Employee_id, Product_id),
+  5  FOREIGN KEY(employee_id) REFERENCES Employe(Employee_id));
+FOREIGN KEY(employee_id) REFERENCES Employe(Employee_id))
+                                    *
+ERROR at line 5:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE TABLE Employee_Product(
+  2  Employee_id INT,
+  3  Product_id INT,
+  4  PRIMARY KEY(Employee_id, Product_id),
+  5  FOREIGN KEY(employee_id) REFERENCES Employee(Employee_id));
+
+Table created.
+
+SQL> CREATE TABLE Product_Warehouse(
+  2  Product_Warehouse_id INT PRIMARY KEY,
+  3  Product_id INT,
+  4  Warehouse_id INT,
+  5  FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID));
+CREATE TABLE Product_Warehouse(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP TABLE Product_Warehouse;
+
+Table dropped.
+
+SQL> CREATE TABLE Product_Warehouse(
+  2  Product_Warehouse_id INT PRIMARY KEY,
+  3  Product_id INT,
+  4  Warehouse_id INT,
+  5  FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID));
+FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID))
+                                            *
+ERROR at line 5:
+ORA-00904: "PRODUCT_ID": invalid identifier 
+
+
+SQL> CREATE TABLE Product_Warehouse(
+  2  Product_Warehouse_id INT PRIMARY KEY,
+  3  Product_id INT,
+  4  Warehouse_id INT);
+
+Table created.
+
+SQL> DROP TABLE Product_Kiosk_Owner;
+DROP TABLE Product_Kiosk_Owner
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE TABLE Product_Kiosk_Owner;
+CREATE TABLE Product_Kiosk_Owner
+                               *
+ERROR at line 1:
+ORA-00906: missing left parenthesis 
+
+
+SQL> CREATE TABLE Product_Kiosk_Owner(
+  2  Product_Kiosk_Owner_id INT PRIMARY KEY,
+  3  Product_ID INT,
+  4  Owner_ID INT);
+
+Table created.
+
+SQL> insert into Employee_Product values(111,511);
+
+1 row created.
+
+SQL> insert into Employee_Product values(222,522);
+insert into Employee_Product values(222,522)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (C##CAROLINE.SYS_C007434) violated - parent key not found 
+
+
+SQL> insert into Employee_Product values(112,510);
+
+1 row created.
+
+SQL> insert into Employee_Product values(113,511);
+
+1 row created.
+
+SQL> insert into Product_KioskOwner values(851,511,822);
+
+1 row created.
+
+SQL> insert into Product_KioskOwner values(852,510,811);
+
+1 row created.
+
+SQL> insert into Product_KioskOwner values(853,512,833);
+
+1 row created.
+
+SQL> insert into Product_Warehouse values(531,510,333);
+
+1 row created.
+
+SQL> insert into Product_Warehouse values(532,511,311);
+
+1 row created.
+
+SQL> insert into Product_Warehouse values(511, 512, 322);
+
+1 row created.
+
+SQL> CREATE TABLE Warehouse(
+  2  Warehouse_ID INT PRIMARY KEY,
+  3  Code VARCHAR(20),
+  4  Location VARCHAR(20),
+  5  Phone_Number VARCHAR(20));
+CREATE TABLE Warehouse(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP TABLE WAREHOUSE;
+
+Table dropped.
+
+SQL> CREATE TABLE Warehouse(
+  2  Warehouse_ID INT PRIMARY KEY,
+  3  Code VARCHAR(20),
+  4  Location VARCHAR(20),
+  5  Phone_Number VARCHAR(20));
+
+Table created.
+
+SQL> insert into Warehouse values(311,'B2-31','Nairobi','014532583');
+
+1 row created.
+
+SQL> insert into Warehouse values(311,'B2-31','Nairobi','014532583');
+insert into Warehouse values(311,'B2-31','Nairobi','014532583')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (C##CAROLINE.SYS_C007437) violated 
+
+
+SQL> insert into Warehouse values(333,'D5-85','Garissa','072258468');
+
+1 row created.
+
+SQL> insert into Warehouse values(322,'C2-45','Narok','0745381234');
+
+1 row created.
+
+
+SQL> CREATE SYNONYM Store FOR warehouse;
+
+Synonym created.
+
+SQL> CREATE SYNONYM Merchandise FOR Product;
+
+Synonym created.
+
+SQL> CREATE TRIGGER trg_dependent_assign
+  2  BEFORE INSERT OR DELETE ON Dependent
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DECLARE Employee_ID INTEGER;
+  6      IF NEW.Employee_ID IS NOT NULL THEN
+  7          SET Employee_ID = NEW.Employee_ID;
+  8      ELSE
+  9          SET Employee_ID = OLD.Employee_ID;
+ 10      END IF;
+ 11      END;/
+ 12  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> DROP TRIGGER trg_dependent_assign;
+
+Trigger dropped.
+
+SQL> CREATE TRIGGER trg_dependent_assign
+  2  BEFORE INSERT OR DELETE ON Dependent
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DECLARE Employee_ID INTEGER;
+  6      IF NEW.Employee_ID IS NOT NULL THEN
+  7          SET Employee_ID = NEW.Employee_ID;
+  8      ELSE
+  9          SET Employee_ID = OLD.Employee_ID;
+ 10  END IF;
+ 11  END;
+ 12  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> show errors trigger<trigger_name>;
+Usage: SHOW ERRORS [{ FUNCTION | PROCEDURE | PACKAGE |
+       PACKAGE BODY | TRIGGER | VIEW | TYPE | TYPE BODY |
+       DIMENSION | HIERARCHY | ANALYTIC VIEW | ATTRIBUTE DIMENSION |
+       JAVA SOURCE | JAVA CLASS } [schema.]name]
+SQL> DROP TRIGGER trg_dependent_assign
+  2  
+SQL> DROP TRIGGER trg_dependent_assign;
+
+Trigger dropped.
+
+SQL> CREATE TRIGGER trg_dependent_assign
+  2  BEFORE INSERT OR DELETE ON Dependent
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DECLARE Employee_ID INTEGER;
+  6      IF NEW.Employee_ID IS NOT NULL THEN
+  7          SET Employee_ID = NEW.Employee_ID;
+  8      ELSE
+  9          SET Employee_ID = OLD.Employee_ID;
+ 10  END IF;
+ 11  
+ 12  END;
+ 13  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> DROP TRIGGER trg_dependent_assign;
+
+Trigger dropped.
+
+SQL> CREATE TRIGGER trg_dependent_assign
+  2  BEFORE INSERT OR DELETE ON Dependent
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DECLARE Employee_ID INTEGER;
+  6      IF NEW.Employee_ID IS NOT NULL THEN
+  7          SET Employee_ID = NEW.Employee_ID;
+  8      ELSE
+  9          SET Employee_ID = OLD.Employee_ID;
+ 10      END IF;
+ 11  IF Employee_ID IS NULL THEN
+ 12  END;
+ 13  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> DROP TRIGGER trg_dependent_assign;
+
+Trigger dropped.
+
+SQL> CREATE TRIGGER trg_dependent_assign
+  2  BEFORE INSERT OR DELETE ON Dependent
+  3  FOR EACH ROW
+  4  BEGIN
+  5      DECLARE Employee_ID INTEGER;
+  6      IF NEW.Employee_ID IS NOT NULL THEN
+  7          SET Employee_ID = NEW.Employee_ID;
+  8      ELSE
+  9          SET Employee_ID = OLD.Employee_ID;
+ 10      END IF;
+ 11      IF NEW.Employee_ID IS NOT NULL THEN
+ 12         RAISE(ABORT,'Depenent must be associated with an employee.');
+ 13      END IF;
+ 14  END;
+ 15  /
+
+Warning: Trigger created with compilation errors.
+
+SQL> --Employee data view
+SQL> CREATE VIEW Employee_Info_View AS
+  2  SELECT
+  3      e.employee_id,
+  4      e.first_name,
+  5      e.last_name,
+  6      e.middle_initial,
+  7      e.gender,
+  8      e.address,
+  9      e.hobbies,
+ 10      e.salary,
+ 11      d.department_name,
+ 12      d.location AS department_location,
+ 13      d.phone_number AS department_phone_number
+ 14  FROM
+ 15      Employee
+ 16  JOIN
+ 17      Department d ON e.department_id=d.department_id;
+    Department d ON e.department_id=d.department_id
+                    *
+ERROR at line 17:
+ORA-00904: "E"."DEPARTMENT_ID": invalid identifier 
+
+
+SQL> CREATE VIEW Employee_Info_View AS
+  2  SELECT
+  3      e.employee_id,
+  4      e.first_name,
+  5      e.last_name,
+  6      e.middle_initial,
+  7      e.gender,
+  8      e.address,
+  9      e.hobbies,
+ 10      e.salary,
+ 11      d.department_name,
+ 12      d.location AS department_location,
+ 13      d.phone_number AS department_phone_number
+ 14  FROM
+ 15      Employee
+ 16  JOIN
+ 17      Department d ON E.DEPARTMENT_id = d.department_id;
+    Department d ON E.DEPARTMENT_id = d.department_id
+                    *
+ERROR at line 17:
+ORA-00904: "E"."DEPARTMENT_ID": invalid identifier 
+
+
+SQL> CREATE VIEW Employee_Info_View AS SELECT * FROM Employees WHERE HOBBIES='Basketball';
+CREATE VIEW Employee_Info_View AS SELECT * FROM Employees WHERE HOBBIES='Basketball'
+                                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE VIEW Employee_Info_View AS SELECT * FROM Employee WHERE HOBBIES='Basketball';
+
+View created.
+
+
+SQL> CREATE PROCEDURE insert_employee(
+  2       IN p_first_name VARCHAR(50),
+  3       IN p_last_name VARCHAR(50),
+  4       IN p_gender CHAR(1),
+  5       IN p_address VARCHAR(255),
+  6       IN p_salary DECIMAL(10, 2),
+  7       IN p_department_id INT
+  8  )
+  9  BEGIN
+ 10      INSERT INTO Employee (first_name, last_name, middle_initial, gender, address, hobbies, salary, department_id)
+ 11      VALUES (p_first_name, p_last_name, p_middle_initial, p_gender, p_address, p_hobbies, p_salary, p_department_id);
+ 12  END;
+ 13  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> CREATE PROCEDURE update_employee_salary(
+  2       IN p_employee_id INT,
+  3        IN p_new_salary DECIMAL(10, 2)
+  4  )
+  5  BEGIN
+  6      UPDATE Employee SET salary = p_new_salary WHERE employee_id = p_employee_id;
+  7  END;
+  8  /
+
+Warning: Procedure created with compilation errors.
+
+SQL> ---SUBQUERY
+SQL> SELECT * FROM Employee WHERE Department IN
+  2  (SELECT Department FROM
+  3          (SELECT Department,AVG(Salary) AS AVERAGE SALARY
+  4           FROM Employee
+  5           GROUP BY Department)
+  6           AS t
+  7  WHERE t.AverageSalary>50000);
+        
+Subquery created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> exit
