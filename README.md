@@ -43,6 +43,11 @@ Kiosk product
 
 
 # Setup instructions
+https://apex.oracle.com/pls/apex/r/tronique/warie-ki/home?session=103483234959247
+
+Go to that link,
+login rhkhabure@gmail.com
+password Motherfucker2024
 ## Presrequsistes
 Notepad
 Mysql
